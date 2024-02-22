@@ -30,7 +30,6 @@ db.create_all()
 
 
 
-# 22 flesh out seed file
 # 21 route for data on all cupcakes
 # 20 route for data on single cupcake
 # 19 route to create new cupcake
