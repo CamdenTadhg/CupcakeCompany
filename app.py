@@ -1,6 +1,6 @@
 """Flask app for Cupcakes"""
-from flask import Flask, render_template, request
-from models import db, connect_db
+from flask import Flask, render_template, request, jsonify
+from models import db, connect_db, Cupcake
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from flask_debugtoolbar import DebugToolbarExtension
@@ -22,6 +22,13 @@ app.app_context().push()
 
 connect_db(app)
 db.create_all()
+
+@app.route('/api/cupcakes')
+def show_cupcakes():
+    all_cupcakes = db.session.execute(db.select(Cupcake)).scalars()
+    serialized_cupcakes = [cupcake.serialize_cupcake() for cupcake in all_cupcakes]
+
+    return jsonify(cupcakes = serialized_cupcakes)
 
 
 
