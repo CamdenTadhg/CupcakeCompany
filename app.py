@@ -46,13 +46,21 @@ def add_cupcake():
     db.session.add(new_cupcake)
     db.session.commit()
 
-    return jsonify(cupcake = new_cupcake.serialize_cupcake())
+    return (jsonify(cupcake = new_cupcake.serialize_cupcake()), 201)
+
+@app.route('/api/cupcakes/<int:id>', methods=["PATCH"])
+def update_cupcake(id):
+    cupcake = Cupcake.query.get_or_404(id)
+    cupcake.flavor = request.json.get('flavor', cupcake.flavor)
+    cupcake.size = request.json.get('size', cupcake.size)
+    cupcake.rating = request.json.get('rating', cupcake.rating)
+    cupcake.image = request.json.get('image', cupcake.image)
+    db.session.commit()
+
+    return jsonify(cupcake = cupcake.serialize_cupcake())
 
 
 
-
-
-# 17 test routes using unittest
 # 16 route for updating cupcake
 # 15 route for deleting a cupcake
 # 14 test new routes in Insomnia
