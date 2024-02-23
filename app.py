@@ -59,11 +59,16 @@ def update_cupcake(id):
 
     return jsonify(cupcake = cupcake.serialize_cupcake())
 
+@app.route('/api/cupcakes/<int:id>', methods=["DELETE"])
+def delete_cupcake(id):
+    cupcake = Cupcake.query.get_or_404(id)
+    db.session.delete(cupcake)
+    db.session.commit()
+
+    return jsonify(message="cupcake deleted")
 
 
-# 16 route for updating cupcake
-# 15 route for deleting a cupcake
-# 14 test new routes in Insomnia
+
 # 13 write tests for new routes
 # 12 test routes using unittest
 # 11 create homepage
