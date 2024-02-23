@@ -36,13 +36,22 @@ def show_cupcake(id):
 
     return jsonify(cupcake = cupcake.serialize_cupcake())
 
+@app.route('/api/cupcakes', methods=["POST"])
+def add_cupcake():
+    flavor = request.json['flavor']
+    size = request.json['size']
+    rating = request.json['rating']
+    image = request.json.get('image')
+    new_cupcake = Cupcake(flavor=flavor, size=size, rating=rating, image=image)
+    db.session.add(new_cupcake)
+    db.session.commit()
+
+    return jsonify(cupcake = new_cupcake.serialize_cupcake())
 
 
 
 
 
-# 19 route to create new cupcake
-# 18 test routes in Insomnia
 # 17 test routes using unittest
 # 16 route for updating cupcake
 # 15 route for deleting a cupcake
