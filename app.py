@@ -30,15 +30,17 @@ def show_cupcakes():
 
     return jsonify(cupcakes = serialized_cupcakes)
 
+@app.route('/api/cupcakes/<int:id>')
+def show_cupcake(id):
+    cupcake = Cupcake.query.get_or_404(id)
+
+    return jsonify(cupcake = cupcake.serialize_cupcake())
 
 
 
 
 
 
-
-# 21 route for data on all cupcakes
-# 20 route for data on single cupcake
 # 19 route to create new cupcake
 # 18 test routes in Insomnia
 # 17 test routes using unittest
