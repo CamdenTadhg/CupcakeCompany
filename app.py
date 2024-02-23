@@ -23,6 +23,10 @@ app.app_context().push()
 connect_db(app)
 db.create_all()
 
+@app.route('/')
+def show_homepage():
+    return render_template('home.html')
+
 @app.route('/api/cupcakes')
 def show_cupcakes():
     all_cupcakes = db.session.execute(db.select(Cupcake)).scalars()
@@ -69,8 +73,6 @@ def delete_cupcake(id):
 
 
 
-# 13 write tests for new routes
-# 12 test routes using unittest
 # 11 create homepage
 # 10 write javascript for homepage to get cupcakes and submit form
 # 9 add tests to ensure 404 is returned when cupcakes don't exist (get/patch/delete)
