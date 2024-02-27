@@ -10,11 +10,20 @@ let cupcakeData = {};
 
 $(document).ready(storiesOnStart);
 
-//cupcake searching event listener
+//cupcake searching event listener for submit
 $searchCupcakeForm.submit(function(event){
     event.preventDefault();
     console.log('search form submitted');
     const searchTerm = $('.cupcake-search').val();
+    searchResults = CupcakeList.searchCupcakes(searchTerm);
+    displayCupcakes(searchResults);
+})
+
+//cupcake searching event listener for keypress
+$searchCupcakeForm.keyup(function(){
+    console.log('search character entered');
+    const searchTerm = $('.cupcake-search').val();
+    console.log(searchTerm);
     searchResults = CupcakeList.searchCupcakes(searchTerm);
     displayCupcakes(searchResults);
 })

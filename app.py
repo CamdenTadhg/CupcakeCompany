@@ -73,7 +73,6 @@ def delete_cupcake(id):
 
     return jsonify(message="cupcake deleted")
 
-# 5 enhance search functionality so it searches as you type
 # 4 add functionality on front end to view, update, and delete a cupcake
 # 3 add new model/table for ingredients
 # 2 allow adding ingredients to each cupcake when adding or editing cupcakes

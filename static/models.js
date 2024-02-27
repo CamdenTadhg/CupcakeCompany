@@ -49,14 +49,11 @@ class CupcakeList {
         const numericSearchTerm = parseInt(searchTerm);
         const cupcakeResults = [];
         for (let cupcake of mainCupcakeList.cupcakes){
-            console.log('entering for cupcake of cupcakes');
             console.log('CUPCAKE = ', cupcake);
             for (let key in cupcake){
-                console.log('entering for key in Cupcake');
                 console.log(key);
                 //searches numeric values for the appropriate keys
                 if (key === 'id' || key === 'rating'){
-                    console.log('entering numeric search');
                     console.log(cupcake[key]);
                     if (cupcake[key] === numericSearchTerm){
                         if (cupcakeResults.includes(cupcake) === false){
@@ -66,8 +63,7 @@ class CupcakeList {
                     }
                 }
                 //searches string values for the remaining keys
-                else if (isNaN(numericSearchTerm)){
-                    console.log('entering string search');
+                else if (key === "flavor" || key === "size"){
                     if (cupcake[key].toLowerCase().search(searchTerm.toLowerCase()) != -1){
                         if (cupcakeResults.includes(cupcake) === false){
                             cupcakeResults.push(cupcake);
