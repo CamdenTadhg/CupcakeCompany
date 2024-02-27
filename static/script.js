@@ -9,17 +9,31 @@ const $searchCupcakeForm = $('#search-cupcake-form');
 let cupcakeData = {};
 let cupcakes = {};
 
-$(document).ready(getCupcakes);
+$(document).ready(storiesOnStart);
 
-async function getCupcakes() {
-    try{
-        console.log('starting getCupcakes')
-        cupcakes = await axios.get('/api/cupcakes');
-        displayCupcakes(cupcakes.data.cupcakes);
-    } catch(error) {
-        alert("No cupcakes found")
-    }};
+//cupcake searching event listener
+$searchCupcakeForm.submit(function(event){
+    event.preventDefault();
+    console.log('search form submitted');
+    searchResults = searchCupcakes();
+    displayCupcakes(searchResults);
+})
 
+//cupcake adding event listener
+$cupcakeForm.submit(function(event){
+    event.preventDefault();
+    console.log('cupcake form submitted');
+    newCupcake = gatherCupcakeData();
+    newCupcake.addCupcake();
+});
+
+//initial function to show cupcakes on site load
+async function storiesOnStart() {
+    mainCupcakeList = await CupcakeList.getCupcakes();
+    displayCupcakes(mainCupcakeList)
+}
+
+//display an instance of CupcakeList on the page
 function displayCupcakes(array){
     console.log('entering display cupcakes')
     console.log(array);
@@ -31,12 +45,7 @@ function displayCupcakes(array){
         $cupcakeList.append($cupcakeLi);
 }}
 
-$searchCupcakeForm.submit(function(event){
-    event.preventDefault();
-    console.log('search form submitted');
-    searchCupcakes();
-})
-
+//search for cupcakes matching an inputted search string
 function searchCupcakes(){
     const searchTerm = $('.cupcake-search').val();
     const numericSearchTerm = parseInt(searchTerm);
@@ -68,16 +77,10 @@ function searchCupcakes(){
         }
     }
     console.log(cupcakeResults);
-    displayCupcakes(cupcakeResults);
+    return cupcakeResults;
 }
 
-$cupcakeForm.submit(function(event){
-    event.preventDefault();
-    console.log('cupcake form submitted');
-    gatherCupcakeData();
-    submitCupcakeForm();
-});
-
+//pull data from the new cupcake form and return it as a new instance of cupcake. 
 function gatherCupcakeData() {
     console.log('starting gatherCupcakeData');
     const flavor = $cupcakeFlavorInput.val();
@@ -85,21 +88,8 @@ function gatherCupcakeData() {
     const rating = $cupcakeRatingInput.val();
     const image = $cupcakeImageInput.val();
     cupcakeData = {flavor: flavor, size: size, rating: rating, image: image};
-    console.log(cupcakeData);
+    const newCupcake = new Cupcake(cupcakeData);
+    console.log(newCupcake);
+    return newCupcake;
 }
 
-async function submitCupcakeForm() {
-    try{
-        console.log('starting submitCupcakeForm');
-        const response = await axios.post('/api/cupcakes', cupcakeData)
-        console.log(response);
-        $cupcakeList.empty();
-        getCupcakes();
-        $cupcakeFlavorInput.val("");
-        $cupcakeSizeInput.val("");
-        $cupcakeRatingInput.val("");
-        $cupcakeImageInput.val("");
-    } catch(error) {
-        alert("Form submission failed. Please try again")
-    }
-}
