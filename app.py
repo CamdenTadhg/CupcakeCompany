@@ -30,14 +30,14 @@ def show_homepage():
     return render_template('home.html', form=form)
 
 @app.route('/api/cupcakes')
-def show_cupcakes():
+def return_cupcakes():
     all_cupcakes = db.session.execute(db.select(Cupcake).order_by(Cupcake.flavor)).scalars()
     serialized_cupcakes = [cupcake.serialize_cupcake() for cupcake in all_cupcakes]
 
     return jsonify(cupcakes = serialized_cupcakes)
 
 @app.route('/api/cupcakes/<int:id>')
-def show_cupcake(id):
+def return_cupcake(id):
     cupcake = Cupcake.query.get_or_404(id)
 
     return jsonify(cupcake = cupcake.serialize_cupcake())
@@ -73,7 +73,11 @@ def delete_cupcake(id):
 
     return jsonify(message="cupcake deleted")
 
-# 4 add functionality on front end to view, update, and delete a cupcake
+# 4 add functionality on front end to update, and delete a cupcake
+    # update button event listener
+    # hide and display update form
+    # update form
+    # update axios function
 # 3 add new model/table for ingredients
 # 2 allow adding ingredients to each cupcake when adding or editing cupcakes
 # 1 create page to add/edit ingredients

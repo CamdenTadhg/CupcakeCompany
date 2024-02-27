@@ -6,9 +6,8 @@ const $cupcakeSizeInput = $('.cupcake-size');
 const $cupcakeRatingInput = $('.cupcake-rating');
 const $cupcakeImageInput = $('.cupcake-image');
 const $searchCupcakeForm = $('#search-cupcake-form');
-let cupcakeData = {};
 
-$(document).ready(storiesOnStart);
+$(document).ready(cupcakesOnStart);
 
 //cupcake searching event listener for submit
 $searchCupcakeForm.submit(function(event){
@@ -36,8 +35,16 @@ $cupcakeForm.submit(function(event){
     newCupcake.addCupcake();
 });
 
+//event listener for delete buttons on cupcake list
+$cupcakeList.on('click', '.delete-button', function(event){
+    Cupcake.deleteCupcake($(event.target).parent().attr('id'));
+    console.log($(event.target).parent().attr('id'));
+    $(this).closest('li').remove();
+
+})
+
 //initial function to show cupcakes on site load
-async function storiesOnStart() {
+async function cupcakesOnStart() {
     mainCupcakeList = await CupcakeList.getCupcakes();
     displayCupcakes(mainCupcakeList)
 }
@@ -49,7 +56,7 @@ function displayCupcakes(array){
     $cupcakeList.empty()
     for (let cupcake of array.cupcakes){
         console.log('starting for statement');
-        const $cupcakeLi = $(`<ul><img src=${cupcake.image} class="img-thumbnail border-0" style="max-width:125px"> <b>${cupcake.flavor}</b> (${cupcake.size}, ${cupcake.rating} stars)</ul>`);
+        const $cupcakeLi = $(`<li id=${cupcake.id}><a href="/cupcakes/${cupcake.id}"><img src=${cupcake.image} class="img-thumbnail border-0" style="max-width:125px"></a> <b>${cupcake.flavor}</b> (${cupcake.size}, ${cupcake.rating} stars) <button class="btn btn-primary btn-small update-button"><i class="fas fa-pencil"></i></button><button class="btn btn-danger btn-small delete-button"><b>X</b></button></li>`);
         $cupcakeLi.addClass('fs-3');
         $cupcakeList.append($cupcakeLi);
 }}

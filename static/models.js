@@ -11,7 +11,7 @@ class Cupcake {
     //create a new instance of cupcake and add it to the database. 
     async addCupcake() {
         try{
-            console.log('starting submitCupcakeForm');
+            console.log('starting add cupcake');
             const response = await axios.post('/api/cupcakes', cupcakeData)
             console.log(response);
             $cupcakeList.empty();
@@ -23,6 +23,15 @@ class Cupcake {
             $cupcakeImageInput.val("");
         } catch(error) {
             alert("Form submission failed. Please try again")
+        }
+    }
+
+    static async deleteCupcake(cupcakeId){
+        try{
+            console.log('starting delete cupcake');
+            await axios.delete(`/api/cupcakes/${cupcakeId}`);
+        } catch(error) {
+            alert("Delete cupcake failed. Please try again.")
         }
     }
 }
