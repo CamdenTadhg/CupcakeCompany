@@ -3,26 +3,29 @@
 {% block title %}Cupcake Company{% endblock %}
 
 {% block content %}
-<div class="container">
-    <ul id="cupcake-list" class="list-group">
-    </ul>
-</div>
+<h1>Cupcake Company</h1>
+<p>
+    <div class="container">
+        <ul id="cupcake-list" class="list-group">
+        </ul>
+    </div>
+</p>
 
 <div class="container">
     <form id="add-cupcake-form">
             <label for="flavor" class="form-label">Flavor
-                <input type="text" name="flavor" class="form-control">
+                <input type="text" name="flavor" class="form-control cupcake-flavor">
             </label>
             <label for="size" class="form-label">Size
-                <input type="text" name="size" class="form-control">
+                <input type="text" name="size" class="form-control cupcake-size">
             </label>
             <label for="rating" class="form-label">Rating
-                <input type="text" name="rating" class="form-control">
+                <input type="text" name="rating" class="form-control cupcake-rating">
             </label>
             <label for="image" class="form-label">Image URL
-                <input type="text" name="image" class="form-control">
+                <input type="text" name="image" class="form-control cupcake-image">
             </label>
-        <button class="btn btn-primary">Add Cupcake</button>
+        <button class="btn btn-primary add-cupcake-button">Add Cupcake</button>
     </form>
 </div>
 {% endblock %}

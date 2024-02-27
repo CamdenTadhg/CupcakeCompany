@@ -29,7 +29,7 @@ def show_homepage():
 
 @app.route('/api/cupcakes')
 def show_cupcakes():
-    all_cupcakes = db.session.execute(db.select(Cupcake)).scalars()
+    all_cupcakes = db.session.execute(db.select(Cupcake).order_by(Cupcake.flavor)).scalars()
     serialized_cupcakes = [cupcake.serialize_cupcake() for cupcake in all_cupcakes]
 
     return jsonify(cupcakes = serialized_cupcakes)
@@ -73,8 +73,6 @@ def delete_cupcake(id):
 
 
 
-# 11 create homepage
-# 10 write javascript for homepage to get cupcakes and submit form
 # 9 add tests to ensure 404 is returned when cupcakes don't exist (get/patch/delete)
 # 8 add functionality to search for cupcakes (type in term, see newly filtered list of cupcakes)
 # 7 refactor javascript code to be object oriented using class methods (fetchAllCupcakes and createCupcakes and instance methods for updating/deleting/searching)
@@ -84,3 +82,4 @@ def delete_cupcake(id):
 # 3 add new model/table for ingredients
 # 2 allow adding ingredients to each cupcake when adding or editing cupcakes
 # 1 create page to add/edit ingredients
+# 0 remove logging logic. 
