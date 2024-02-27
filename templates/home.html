@@ -19,20 +19,29 @@
 </div>
 
 <div class="container my-5">
+<h3>New Cupcake Form</h3>
     <form id="add-cupcake-form">
-            <label for="flavor" class="form-label">Flavor
-                <input type="text" name="flavor" class="form-control cupcake-flavor">
-            </label>
-            <label for="size" class="form-label">Size
-                <input type="text" name="size" class="form-control cupcake-size">
-            </label>
-            <label for="rating" class="form-label">Rating
-                <input type="text" name="rating" class="form-control cupcake-rating">
-            </label>
-            <label for="image" class="form-label">Image URL
-                <input type="text" name="image" class="form-control cupcake-image">
-            </label>
-        <button class="btn btn-primary add-cupcake-button">Add Cupcake</button>
+        {{form.hidden_tag()}}
+        <div>
+            {{form.flavor.label(class_="form-label")}}
+            {{form.flavor(class_="form-control cupcake-flavor")}}
+            <span class="text-danger">
+                {% for error in form.flavor.errors %}
+                    {{error}}
+                {% endfor %}
+            </span>
+        </div>
+        <div>
+            {{form.image.label(class_="form-label")}}
+            {{form.image(class_="form-control cupcake-image")}}
+            <span class="text-danger">
+                {% for error in form.image.errors %}
+                    {{error}}
+                {% endfor %}
+            </span>
+        </div>
+        {% include 'form_template.html' %}
+        <button class="col btn btn-primary add-cupcake-button">Add Cupcake</button>
     </form>
 </div>
 {% endblock %}

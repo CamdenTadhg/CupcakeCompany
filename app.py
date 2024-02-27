@@ -2,7 +2,8 @@
 from flask import Flask, render_template, request, jsonify
 from models import db, connect_db, Cupcake
 from flask_wtf import FlaskForm
-from wtforms import StringField
+from wtforms import StringField, IntegerField
+from forms import AddCupcakeForm
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -25,7 +26,8 @@ db.create_all()
 
 @app.route('/')
 def show_homepage():
-    return render_template('home.html')
+    form = AddCupcakeForm()
+    return render_template('home.html', form=form)
 
 @app.route('/api/cupcakes')
 def show_cupcakes():
@@ -71,10 +73,6 @@ def delete_cupcake(id):
 
     return jsonify(message="cupcake deleted")
 
-
-
-# 7 refactor javascript code to be object oriented using class methods (fetchAllCupcakes and createCupcakes and instance methods for updating/deleting/searching)
-# 6 refactor HTML page to use WTForms (create forms.py too)
 # 5 enhance search functionality so it searches as you type
 # 4 add functionality on front end to view, update, and delete a cupcake
 # 3 add new model/table for ingredients

@@ -1,0 +1,19 @@
+<div>
+    {{form.size.label(class_="form-label")}}
+    {{form.size(class_="form-control cupcake-size")}}
+    <span class="text-danger">
+        {% for error in form.size.errors %}
+            {{error}}
+        {% endfor %}
+    </span>
+</div>
+
+<div>
+    {{form.rating.label(class_="form-label")}}
+    {{form.rating(class_="form-control cupcake-rating")}}
+    <span class="text-danger">
+        {% for error in form.rating.errors %}
+            {{error}}
+        {% endfor %}
+    </span>    
+</div>

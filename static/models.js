@@ -15,7 +15,8 @@ class Cupcake {
             const response = await axios.post('/api/cupcakes', cupcakeData)
             console.log(response);
             $cupcakeList.empty();
-            getCupcakes();
+            mainCupcakeList = await CupcakeList.getCupcakes();
+            displayCupcakes(mainCupcakeList);
             $cupcakeFlavorInput.val("");
             $cupcakeSizeInput.val("");
             $cupcakeRatingInput.val("");
