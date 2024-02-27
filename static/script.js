@@ -7,7 +7,6 @@ const $cupcakeRatingInput = $('.cupcake-rating');
 const $cupcakeImageInput = $('.cupcake-image');
 const $searchCupcakeForm = $('#search-cupcake-form');
 let cupcakeData = {};
-let cupcakes = {};
 
 $(document).ready(storiesOnStart);
 
@@ -15,7 +14,8 @@ $(document).ready(storiesOnStart);
 $searchCupcakeForm.submit(function(event){
     event.preventDefault();
     console.log('search form submitted');
-    searchResults = searchCupcakes();
+    const searchTerm = $('.cupcake-search').val();
+    searchResults = CupcakeList.searchCupcakes(searchTerm);
     displayCupcakes(searchResults);
 })
 
@@ -38,47 +38,12 @@ function displayCupcakes(array){
     console.log('entering display cupcakes')
     console.log(array);
     $cupcakeList.empty()
-    for (cupcake of array){
+    for (let cupcake of array.cupcakes){
         console.log('starting for statement');
         const $cupcakeLi = $(`<ul><img src=${cupcake.image} class="img-thumbnail border-0" style="max-width:125px"> <b>${cupcake.flavor}</b> (${cupcake.size}, ${cupcake.rating} stars)</ul>`);
         $cupcakeLi.addClass('fs-3');
         $cupcakeList.append($cupcakeLi);
 }}
-
-//search for cupcakes matching an inputted search string
-function searchCupcakes(){
-    const searchTerm = $('.cupcake-search').val();
-    const numericSearchTerm = parseInt(searchTerm);
-    const cupcakeResults = [];
-    for (cupcake of cupcakes.data.cupcakes){
-        console.log('entering for cupcake of cupcakes');
-        console.log(cupcake);
-        for (key in cupcake){
-            console.log('entering for key in cupcake');
-            console.log(key);
-            if (key === 'id' || key === 'rating'){
-                console.log('entering numeric search');
-                if (cupcake[key] === numericSearchTerm){
-                    if (cupcakeResults.includes(cupcake) === false){
-                        cupcakeResults.push(cupcake);
-                        console.log('CUPCAKE ADDED');
-                    }
-                }
-            }
-            else if (isNaN(numericSearchTerm)){
-                console.log('entering string search');
-                if (cupcake[key].search(searchTerm) != -1){
-                    if (cupcakeResults.includes(cupcake) === false){
-                        cupcakeResults.push(cupcake);
-                        console.log('CUPCAKE ADDED');
-                    }
-                }
-            }
-        }
-    }
-    console.log(cupcakeResults);
-    return cupcakeResults;
-}
 
 //pull data from the new cupcake form and return it as a new instance of cupcake. 
 function gatherCupcakeData() {
