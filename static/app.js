@@ -40,7 +40,14 @@ $cupcakeList.on('click', '.delete-button', function(event){
     Cupcake.deleteCupcake($(event.target).parent().attr('id'));
     console.log($(event.target).parent().attr('id'));
     $(this).closest('li').remove();
+})
 
+//event listener for update buttons on cupcake list
+$cupcakeList.on('click', '.update-button', function(event){
+})
+
+//event listener for submit update buttons on cupcake list
+$cupcakeList.on('click', '.update-submit', function(event){
 })
 
 //initial function to show cupcakes on site load
@@ -56,7 +63,7 @@ function displayCupcakes(array){
     $cupcakeList.empty()
     for (let cupcake of array.cupcakes){
         console.log('starting for statement');
-        const $cupcakeLi = $(`<li id=${cupcake.id}><a href="/cupcakes/${cupcake.id}"><img src=${cupcake.image} class="img-thumbnail border-0" style="max-width:125px"></a> <b>${cupcake.flavor}</b> (${cupcake.size}, ${cupcake.rating} stars) <button class="btn btn-primary btn-small update-button"><i class="fas fa-pencil"></i></button><button class="btn btn-danger btn-small delete-button"><b>X</b></button></li>`);
+        const $cupcakeLi = $(`<li id=${cupcake.id}><a href="/cupcakes/${cupcake.id}"><img src=${cupcake.image} class="img-thumbnail border-0" style="max-width:125px"></a> <b>${cupcake.flavor}</b> <span class="cupcake-details">(${cupcake.size}, ${cupcake.rating} stars)</span> <button class="btn btn-primary btn-small update-button" data-bs-toggle="modal" data-bs-target="update-modal"><i class="fas fa-pencil"></i></button><button class="btn btn-danger btn-small delete-button"><b>X</b></button></li>`);
         $cupcakeLi.addClass('fs-3');
         $cupcakeList.append($cupcakeLi);
 }}

@@ -12,7 +12,6 @@
     </form>
 </div>
 
-
 <div class="container my-5">
     <ul id="cupcake-list" class="list-group list-unstyled">
     </ul>
@@ -21,21 +20,21 @@
 <div class="container my-5">
 <h3>New Cupcake Form</h3>
     <form id="add-cupcake-form">
-        {{form.hidden_tag()}}
+        {{addForm.hidden_tag()}}
         <div>
-            {{form.flavor.label(class_="form-label")}}
-            {{form.flavor(class_="form-control cupcake-flavor")}}
+            {{addForm.flavor.label(class_="form-label")}}
+            {{addForm.flavor(class_="form-control cupcake-flavor")}}
             <span class="text-danger">
-                {% for error in form.flavor.errors %}
+                {% for error in addForm.flavor.errors %}
                     {{error}}
                 {% endfor %}
             </span>
         </div>
         <div>
-            {{form.image.label(class_="form-label")}}
-            {{form.image(class_="form-control cupcake-image")}}
+            {{addForm.image.label(class_="form-label")}}
+            {{addForm.image(class_="form-control cupcake-image")}}
             <span class="text-danger">
-                {% for error in form.image.errors %}
+                {% for error in addForm.image.errors %}
                     {{error}}
                 {% endfor %}
             </span>

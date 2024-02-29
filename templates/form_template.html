@@ -1,18 +1,18 @@
 <div>
-    {{form.size.label(class_="form-label")}}
-    {{form.size(class_="form-control cupcake-size")}}
+    {{addForm.size.label(class_="form-label")}}
+    {{addForm.size(class_="form-control cupcake-size")}}
     <span class="text-danger">
-        {% for error in form.size.errors %}
+        {% for error in addForm.size.errors %}
             {{error}}
         {% endfor %}
     </span>
 </div>
 
 <div>
-    {{form.rating.label(class_="form-label")}}
-    {{form.rating(class_="form-control cupcake-rating")}}
+    {{addForm.rating.label(class_="form-label")}}
+    {{addForm.rating(class_="form-control cupcake-rating")}}
     <span class="text-danger">
-        {% for error in form.rating.errors %}
+        {% for error in addForm.rating.errors %}
             {{error}}
         {% endfor %}
     </span>    

@@ -34,6 +34,15 @@ class Cupcake {
             alert("Delete cupcake failed. Please try again.")
         }
     }
+
+    static async editCupcake(cupcakeId){
+        try{
+            console.log('starting update cupcake')
+            
+        } catch(error) {
+            alert("Update cupcake failed. Please try again.")
+        }
+    }
 }
 
 class CupcakeList {

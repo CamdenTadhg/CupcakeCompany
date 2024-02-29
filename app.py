@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from models import db, connect_db, Cupcake
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
-from forms import AddCupcakeForm
+from forms import AddCupcakeForm, UpdateCupcakeForm
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -26,8 +26,9 @@ db.create_all()
 
 @app.route('/')
 def show_homepage():
-    form = AddCupcakeForm()
-    return render_template('home.html', form=form)
+    addForm = AddCupcakeForm()
+    updateForm = UpdateCupcakeForm()
+    return render_template('home.html', addForm=addForm, updateForm=updateForm)
 
 @app.route('/api/cupcakes')
 def return_cupcakes():
@@ -73,12 +74,20 @@ def delete_cupcake(id):
 
     return jsonify(message="cupcake deleted")
 
-# 4 add functionality on front end to update, and delete a cupcake
-    # update button event listener
-    # hide and display update form
-    # update form
+
+# 4 create page to add/edit ingredients
+    # route
+    # form model
+    # html page
+    # api function to add ingredients
+    # axios function to add ingredients
+    # api function to update ingredients
+    # axios function to update ingredients
+# 3 allow adding ingredients to each cupcake when adding cupcakes
+# 2 add functionality on front end to update a cupcake
+    # update form page
+    # route for update form page
     # update axios function
-# 3 add new model/table for ingredients
-# 2 allow adding ingredients to each cupcake when adding or editing cupcakes
-# 1 create page to add/edit ingredients
-# 0 remove logging logic. 
+    # fix delete behavior
+# 1 add testing (flask & javascript)
+# 0 remove logging logic
