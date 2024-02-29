@@ -21,27 +21,54 @@
 <div class="container my-5">
 <h3>New Cupcake Form</h3>
     <form id="add-cupcake-form">
-        {{addForm.hidden_tag()}}
+        {{form.hidden_tag()}}
         <div>
-            {{addForm.flavor.label(class_="form-label")}}
-            {{addForm.flavor(class_="form-control cupcake-flavor")}}
+            {{form.flavor.label(class_="form-label")}}
+            {{form.flavor(class_="form-control cupcake-flavor")}}
             <span class="text-danger">
-                {% for error in addForm.flavor.errors %}
+                {% for error in form.flavor.errors %}
                     {{error}}
                 {% endfor %}
             </span>
         </div>
         <div>
-            {{addForm.image.label(class_="form-label")}}
-            {{addForm.image(class_="form-control cupcake-image")}}
+            {{form.image.label(class_="form-label")}}
+            {{form.image(class_="form-control cupcake-image")}}
             <span class="text-danger">
-                {% for error in addForm.image.errors %}
+                {% for error in form.image.errors %}
                     {{error}}
                 {% endfor %}
             </span>
         </div>
-        {% include 'form_template.html' %}
-        <button class="col btn btn-primary add-cupcake-button">Add Cupcake</button>
+        <div>
+            {{form.size.label(class_="form-label")}}
+            {{form.size(class_="form-control cupcake-size")}}
+            <span class="text-danger">
+                {% for error in form.size.errors %}
+                    {{error}}
+                {% endfor %}
+            </span>
+        </div>
+        
+        <div>
+            {{form.rating.label(class_="form-label")}}
+            {{form.rating(class_="form-control cupcake-rating")}}
+            <span class="text-danger">
+                {% for error in form.rating.errors %}
+                    {{error}}
+                {% endfor %}
+            </span>    
+        </div>
+        <div>
+            {{form.ingredients.label(class_="form-label")}}
+            {{form.ingredients(class_="form-select cupcake-ingredients", multiple="multiple", size=15)}}
+            <span class="text-danger">
+                {% for error in form.ingredients.errors %}
+                    {{error}}
+                {% endfor %}
+            </span>
+        </div>
+        <button class="col btn btn-primary add-cupcake-button">Submit</button>
     </form>
 </div>
 

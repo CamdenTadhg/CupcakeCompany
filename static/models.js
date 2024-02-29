@@ -6,6 +6,7 @@ class Cupcake {
         this.size = size;
         this.rating = rating;
         this.image = image;
+        this.ingredients = ingredients;
     }
 
     //create a new instance of cupcake and add it to the database. 
@@ -22,6 +23,7 @@ class Cupcake {
             $cupcakeSizeInput.val("");
             $cupcakeRatingInput.val("");
             $cupcakeImageInput.val("");
+            $cupcakeIngredientInput.val("");
         } catch(error) {
             alert("Form submission failed. Please try again")
         }

@@ -5,6 +5,7 @@ const $cupcakeFlavorInput = $('.cupcake-flavor');
 const $cupcakeSizeInput = $('.cupcake-size');
 const $cupcakeRatingInput = $('.cupcake-rating');
 const $cupcakeImageInput = $('.cupcake-image');
+const $cupcakeIngredientInput = $('.cupcake-ingredients');
 const $searchCupcakeForm = $('#search-cupcake-form');
 const $ingredientForm = $('#ingredient-form');
 const $ingredientList = $('.ingredient-list');
@@ -59,7 +60,7 @@ $cupcakeList.on('click', '.delete-button', async function(event){
 $ingredientForm.submit(async function(event){
     event.preventDefault();
     console.log('ingredient form submitted');
-    if ($ingredientIdInput.val() === undefined){
+    if ($ingredientIdInput.val() === ''){
         newIngredient = gatherIngredientData();
         await newIngredient.addIngredient();
     } else {
@@ -106,7 +107,8 @@ function gatherCupcakeData() {
     const size = $cupcakeSizeInput.val();
     const rating = $cupcakeRatingInput.val();
     const image = $cupcakeImageInput.val();
-    cupcakeData = {flavor: flavor, size: size, rating: rating, image: image};
+    const ingredients = $cupcakeIngredientInput.val();
+    cupcakeData = {flavor: flavor, size: size, rating: rating, image: image, ingredients: ingredients};
     const newCupcake = new Cupcake(cupcakeData);
     console.log(newCupcake);
     return newCupcake;

@@ -18,7 +18,7 @@ class Cupcake(db.Model):
     rating = db.Column(db.Float, nullable=False)
     image = db.Column(db.Text, default='https://tinyurl.com/demo-cupcake')
 
-    recipelines = db.relationship('RecipeLine', backref='cupcakes')
+    ingredients = db.relationship('Ingredient', secondary='recipelines', back_populates='cupcakes')
 
     def serialize_cupcake(self):
         return {
@@ -37,14 +37,13 @@ class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.Text, nullable=False, unique=True)
 
-    cupcakes = db.relationship('Cupcake', secondary='recipelines', backref='ingredients')
-    recipelines = db.relationship('RecipeLine', backref='ingredients')
-
     def serialize_ingredient(self):
         return {
             "id" : self.id,
             "name" : self.name
         }
+    
+    cupcakes = db.relationship('Cupcake', secondary='recipelines', back_populates='ingredients')
 
 class RecipeLine(db.Model):
     """recipe lines for many to many relationship between cupcakes and ingredients"""

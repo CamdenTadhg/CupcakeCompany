@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from models import db, connect_db, Cupcake, Ingredient
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
-from forms import AddCupcakeForm, UpdateCupcakeForm, IngredientForm
+from forms import CupcakeForm, IngredientForm
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -26,9 +26,10 @@ db.create_all()
 
 @app.route('/')
 def show_homepage():
-    addForm = AddCupcakeForm()
-    updateForm = UpdateCupcakeForm()
-    return render_template('home.html', addForm=addForm, updateForm=updateForm)
+    form = CupcakeForm()
+    ingredients = db.session.execute(db.select(Ingredient).order_by(Ingredient.name)).scalars()
+    form.ingredients.choices = [(ingredient.id, ingredient.name) for ingredient in ingredients]
+    return render_template('home.html', form=form)
 
 @app.route('/ingredients')
 def show_ingredients():
@@ -44,11 +45,18 @@ def return_cupcakes():
 
 @app.route('/api/cupcakes', methods=["POST"])
 def add_cupcake():
+    print('******************************************')
+    print(request.json)
+    print('******************************************')
     flavor = request.json['flavor']
     size = request.json['size']
     rating = request.json['rating']
     image = request.json.get('image')
     new_cupcake = Cupcake(flavor=flavor, size=size, rating=rating, image=image)
+    ingredients = request.json['ingredients']
+    for ingredient in ingredients: 
+        current_ingredient = db.session.query(Ingredient).filter(Ingredient.id == ingredient).first()
+        new_cupcake.ingredients.append(current_ingredient)
     db.session.add(new_cupcake)
     db.session.commit()
 
@@ -98,7 +106,6 @@ def update_ingredient(id):
     return jsonify(ingredient = ingredient.serialize_ingredient())
 
 
-# 3 allow adding ingredients to each cupcake when adding cupcakes
 # 2 add functionality on front end to update a cupcake
     # update form fill
     # api update function (to include ingredients)
