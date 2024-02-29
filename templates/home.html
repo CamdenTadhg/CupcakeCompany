@@ -19,9 +19,12 @@
 </div>
 
 <div class="container my-5">
-<h3>New Cupcake Form</h3>
+<h3 id="cupcake_form">Cupcake Form</h3>
     <form id="add-cupcake-form">
         {{form.hidden_tag()}}
+        <div hidden>
+            {{form.id(class_="cupcake-id")}}
+        </div>
         <div>
             {{form.flavor.label(class_="form-label")}}
             {{form.flavor(class_="form-control cupcake-flavor")}}

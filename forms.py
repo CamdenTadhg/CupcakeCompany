@@ -5,6 +5,7 @@ from wtforms.validators import InputRequired, URL, NumberRange, AnyOf, Optional
 class CupcakeForm(FlaskForm):
     """form for adding and updating a cupcake to the database"""
 
+    id = IntegerField("Id", validators=[Optional()])
     flavor = StringField("Flavor", validators=[InputRequired(message="Please enter a flavor")])
     size = StringField("Size", validators=[InputRequired(message="Please enter a size"), AnyOf(values=["extra small", "small", "medium", "large", "extra large"], message="Please enter a valid size")])
     rating = IntegerField("Rating", validators=[NumberRange(min=1, max=10, message="Please enter a number between 1 and 10")])

@@ -1,6 +1,7 @@
 const $cupcakeList = $("#cupcake-list");
 const $cupcakeForm = $("#add-cupcake-form");
 const $addCupcakeButton = $(".add-cupcake-button");
+const $cupcakeIdInput = $(".cupcake-id");
 const $cupcakeFlavorInput = $('.cupcake-flavor');
 const $cupcakeSizeInput = $('.cupcake-size');
 const $cupcakeRatingInput = $('.cupcake-rating');
@@ -36,12 +37,37 @@ $searchCupcakeForm.keyup(function(){
 })
 
 //cupcake adding event listener
-$cupcakeForm.submit(function(event){
+$cupcakeForm.submit(async function(event){
     event.preventDefault();
     console.log('cupcake form submitted');
-    newCupcake = gatherCupcakeData();
-    newCupcake.addCupcake();
+    if ($cupcakeIdInput.val() === ''){
+        newCupcake = gatherCupcakeData();
+        await newCupcake.addCupcake();
+    } else {
+        cupcakeId = $cupcakeIdInput.val();
+        cupcakeFlavor = $cupcakeFlavorInput.val();
+        cupcakeImage = $cupcakeImageInput.val();
+        cupcakeSize = $cupcakeSizeInput.val();
+        cupcakeRating = $cupcakeRatingInput.val();
+        cupcakeIngredients = $cupcakeIngredientInput.val();
+        cupcakeData = {flavor: cupcakeFlavor, image: cupcakeImage, size: cupcakeSize, rating: cupcakeRating, ingredients: cupcakeIngredients};
+        await Cupcake.updateCupcake(cupcakeId, cupcakeData);
+    }
+    
 });
+
+//cupcake click event listener
+$cupcakeList.on('click', '.update-button', async function(event){
+    let cupcakeId = $(event.target).closest('li').attr('id');
+    console.log('cupcakeId = ', cupcakeId);
+    returnArray = await Cupcake.getCupcake(cupcakeId);
+    updateCupcake = returnArray[0];
+    updateIngredients = returnArray[1];
+    console.log(await Cupcake.getCupcake(cupcakeId));
+    console.log('updateCupcake = ', updateCupcake);
+    console.log('updateIngredients = ', updateIngredients);
+    fillCupcakeForm(updateCupcake, updateIngredients);
+})
 
 //event listener for delete buttons on cupcake list
 $cupcakeList.on('click', '.delete-button', async function(event){
@@ -95,7 +121,7 @@ function displayCupcakes(array){
     $cupcakeList.empty()
     for (let cupcake of array.cupcakes){
         console.log('starting for statement');
-        const $cupcakeLi = $(`<li id=${cupcake.id}><img src=${cupcake.image} class="img-thumbnail border-0" style="max-width:125px"> <b>${cupcake.flavor}</b> <span class="cupcake-details">(${cupcake.size}, ${cupcake.rating} stars)</span><button class="btn btn-primary btn-small update-button" data-bs-toggle="modal" data-bs-target="update-modal"><i class="fas fa-pencil"></i></button><button class="btn btn-danger btn-small delete-button"><b>X</b></button></li>`);
+        const $cupcakeLi = $(`<li id=${cupcake.id}><img src=${cupcake.image} class="img-thumbnail border-0" style="max-width:125px"> <b>${cupcake.flavor}</b><span class="cupcake-details">(${cupcake.size}, ${cupcake.rating} stars)</span><a href="#cupcake_form" class="btn btn-primary btn-small update-button" role=""button"><i class="fas fa-pencil"></i></a><button class="btn btn-danger btn-small delete-button"><b>X</b></button></li>`);
         $cupcakeLi.addClass('fs-3');
         $cupcakeList.append($cupcakeLi);
 }}
@@ -112,6 +138,18 @@ function gatherCupcakeData() {
     const newCupcake = new Cupcake(cupcakeData);
     console.log(newCupcake);
     return newCupcake;
+}
+
+//fill the cupcake form with details based on the cupcake to be updated
+function fillCupcakeForm(cupcake, ingredients){
+    $cupcakeIdInput.val(cupcake.id);
+    $cupcakeFlavorInput.val(cupcake.flavor);
+    $cupcakeFlavorInput.attr('class', 'form-control-plaintext');
+    $cupcakeImageInput.val(cupcake.image);
+    $cupcakeImageInput.attr('class', 'form-control-plaintext');
+    $cupcakeSizeInput.val(cupcake.size);
+    $cupcakeRatingInput.val(cupcake.rating);
+    $cupcakeIngredientInput.val(ingredients);
 }
 
 //initial function to show ingredients on site load

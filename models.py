@@ -26,7 +26,15 @@ class Cupcake(db.Model):
             "flavor" : self.flavor,
             "size" : self.size,
             "rating" : self.rating,
-            "image" : self.image
+            "image" : self.image,
+        }
+    
+    def serialize_ingredients(self):
+        ingredients_list = []
+        for ingredient in self.ingredients:
+            ingredients_list.append(ingredient.id)
+        return {
+            "ingredients": ingredients_list
         }
     
 class Ingredient(db.Model):
@@ -52,9 +60,3 @@ class RecipeLine(db.Model):
 
     cupcake_id = db.Column(db.Integer, db.ForeignKey('cupcakes.id'), primary_key=True)
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'), primary_key=True)
-
-    def serialize_recipeline(self):
-        return {
-            "cupcake_id" : self.cupcake_id, 
-            "ingredient_id" : self.ingredient_id,
-        }

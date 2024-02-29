@@ -1,6 +1,6 @@
 """Flask app for Cupcakes"""
 from flask import Flask, render_template, request, jsonify
-from models import db, connect_db, Cupcake, Ingredient
+from models import db, connect_db, Cupcake, Ingredient, RecipeLine
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
 from forms import CupcakeForm, IngredientForm
@@ -62,6 +62,12 @@ def add_cupcake():
 
     return (jsonify(cupcake = new_cupcake.serialize_cupcake()), 201)
 
+@app.route('/api/cupcakes/<int:id>', methods=["GET"])
+def return_cupcake(id):
+    cupcake = Cupcake.query.get_or_404(id)
+    ingredients = cupcake.ingredients
+    return jsonify(cupcake = cupcake.serialize_cupcake(), ingredients = cupcake.serialize_ingredients())
+
 @app.route('/api/cupcakes/<int:id>', methods=["PATCH"])
 def update_cupcake(id):
     cupcake = Cupcake.query.get_or_404(id)
@@ -69,6 +75,12 @@ def update_cupcake(id):
     cupcake.size = request.json.get('size', cupcake.size)
     cupcake.rating = request.json.get('rating', cupcake.rating)
     cupcake.image = request.json.get('image', cupcake.image)
+    ingredients = request.json.get('ingredients', cupcake.ingredients)
+    RecipeLine.query.filter_by(cupcake_id = id).delete()
+    db.session.commit()
+    for ingredient in ingredients:
+        current_ingredient = db.session.query(Ingredient).filter(Ingredient.id == ingredient).first()
+        cupcake.ingredients.append(current_ingredient)
     db.session.commit()
 
     return jsonify(cupcake = cupcake.serialize_cupcake())
@@ -107,9 +119,7 @@ def update_ingredient(id):
 
 
 # 2 add functionality on front end to update a cupcake
-    # update form fill
-    # api update function (to include ingredients)
-    # axios update function
+    # add focus line to click listener so that it will move to the form on the first click. 
 # 1 add testing (flask & javascript)
     # run testing
 # 0 remove logging logic

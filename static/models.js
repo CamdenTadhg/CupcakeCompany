@@ -39,12 +39,42 @@ class Cupcake {
         }
     }
 
-    static async editCupcake(cupcakeId){
+    static async getCupcake(cupcakeId){
         try{
-            console.log('starting update cupcake')
+            console.log('starting get cupcake');
+            console.log('cupcakeId = ', cupcakeId);
+            const response = await axios.get(`/api/cupcakes/${cupcakeId}`);
+            console.log(response);
+            console.log(response.data.cupcake);
+            const updateCupcake = new Cupcake(response.data.cupcake);
+            console.log('updateCupcake = ', updateCupcake);
+            const updateIngredients = response.data.ingredients;
+            console.log('updateIngredients = ', updateIngredients);
+            return [updateCupcake, updateIngredients.ingredients];
+        } catch(error){
+            alert("Get cupcake failed. Please try again.")
+        }
+    }
 
+    static async updateCupcake(cupcakeId, cupcakeData) {
+        try {
+            console.log('starting update cupcake');
+            const response = await axios.patch(`/api/cupcakes/${cupcakeId}`, cupcakeData);
+            console.log(response);
+            $cupcakeList.empty();
+            let mainCupcakeList = await CupcakeList.getCupcakes();
+            console.log('mainCupcakeList = ', mainCupcakeList);
+            displayCupcakes(mainCupcakeList);
+            $cupcakeIdInput.val('');
+            $cupcakeFlavorInput.val("");
+            $cupcakeFlavorInput.attr("class", 'form-control');
+            $cupcakeImageInput.val("");
+            $cupcakeImageInput.attr("class", "form-control");
+            $cupcakeSizeInput.val("");
+            $cupcakeRatingInput.val("");
+            $cupcakeIngredientInput.val("");
         } catch(error) {
-            alert("Update cupcake failed. Please try again.")
+            alert('Update ingredient form submission failed. Please try again');
         }
     }
 }
@@ -132,7 +162,7 @@ class Ingredient {
             let mainIngredientList = await IngredientList.getIngredients();
             console.log('mainIngredientList = ', mainIngredientList);
             displayIngredients(mainIngredientList);
-            $ingredientIdInput.val(undefined);
+            $ingredientIdInput.val('');
             $ingredientNameInput.val("");
         } catch(error) {
             alert('Update ingredient form submission failed. Please try again');
