@@ -12,6 +12,7 @@ class Cupcake {
     async addCupcake() {
         try{
             console.log('starting add cupcake');
+            console.log('cupcakeData = ', cupcakeData)
             const response = await axios.post('/api/cupcakes', cupcakeData)
             console.log(response);
             $cupcakeList.empty();
@@ -29,16 +30,17 @@ class Cupcake {
     static async deleteCupcake(cupcakeId){
         try{
             console.log('starting delete cupcake');
+            console.log('cupcake id = ', cupcakeId);
             await axios.delete(`/api/cupcakes/${cupcakeId}`);
         } catch(error) {
-            alert("Delete cupcake failed. Please try again.")
+            alert("Delete cupcake failed. Please try again.");
         }
     }
 
     static async editCupcake(cupcakeId){
         try{
             console.log('starting update cupcake')
-            
+
         } catch(error) {
             alert("Update cupcake failed. Please try again.")
         }
@@ -94,5 +96,48 @@ class CupcakeList {
         console.log(cupcakeResults);
         return new CupcakeList(cupcakeResults);
     }
+}
 
+class Ingredient {
+
+    constructor({id, name}) {
+        this.id = id;
+        this.name = name;
     }
+
+    //create a new instance of cupcake and add it to the database. 
+    async addIngredient() {
+        try{
+            console.log('starting add ingredient');
+            const response = await axios.post('/api/ingredients', ingredientData);
+            console.log(response);
+            $ingredientList.empty();
+            let mainIngredientList = await IngredientList.getIngredients();
+            console.log('mainIngredientList = ', mainIngredientList);
+            displayIngredients(mainIngredientList);
+            $ingredientNameInput.val("");
+        } catch(error) {
+            alert("Form submission failed. Please try again")
+        }
+    }
+}
+    
+class IngredientList {
+    
+    constructor(ingredients){
+        this.ingredients = ingredients;
+    }
+    
+    // pulls full list of ingredients from the api and returns them as an new instance of IngredientList
+    static async getIngredients() {
+        try{
+            console.log('starting getIngredients')
+            const response = await axios.get('/api/ingredients');
+            const ingredients = response.data.ingredients.map(ingredient => new Ingredient(ingredient));
+            console.log('ingredients = ', ingredients);
+            return new IngredientList(ingredients);
+        } catch(error) {
+            alert("No ingredients found")
+        }
+    };   
+}

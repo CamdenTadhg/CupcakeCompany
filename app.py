@@ -1,9 +1,9 @@
 """Flask app for Cupcakes"""
 from flask import Flask, render_template, request, jsonify
-from models import db, connect_db, Cupcake
+from models import db, connect_db, Cupcake, Ingredient
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
-from forms import AddCupcakeForm, UpdateCupcakeForm
+from forms import AddCupcakeForm, UpdateCupcakeForm, IngredientForm
 from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
@@ -30,18 +30,17 @@ def show_homepage():
     updateForm = UpdateCupcakeForm()
     return render_template('home.html', addForm=addForm, updateForm=updateForm)
 
+@app.route('/ingredients')
+def show_ingredients():
+    form = IngredientForm()
+    return render_template('ingredients.html', form=form)
+
 @app.route('/api/cupcakes')
 def return_cupcakes():
     all_cupcakes = db.session.execute(db.select(Cupcake).order_by(Cupcake.flavor)).scalars()
     serialized_cupcakes = [cupcake.serialize_cupcake() for cupcake in all_cupcakes]
 
     return jsonify(cupcakes = serialized_cupcakes)
-
-@app.route('/api/cupcakes/<int:id>')
-def return_cupcake(id):
-    cupcake = Cupcake.query.get_or_404(id)
-
-    return jsonify(cupcake = cupcake.serialize_cupcake())
 
 @app.route('/api/cupcakes', methods=["POST"])
 def add_cupcake():
@@ -74,20 +73,38 @@ def delete_cupcake(id):
 
     return jsonify(message="cupcake deleted")
 
+@app.route('/api/ingredients')
+def return_ingredients():
+    all_ingredients = db.session.execute(db.select(Ingredient).order_by(Ingredient.name)).scalars()
+    serialized_ingredients = [ingredient.serialize_ingredient() for ingredient in all_ingredients]
+
+    return jsonify(ingredients = serialized_ingredients)
+
+@app.route('/api/ingredients', methods=["POST"])
+def add_ingredient():
+    name = request.json['name']
+    new_ingredient = Ingredient(name=name)
+    db.session.add(new_ingredient)
+    db.session.commit()
+
+    return (jsonify(ingredient = new_ingredient.serialize_ingredient()), 201)
+
+@app.route('/api/ingredients/<int:id>', methods=["PATCH"])
+def update_ingredient(id):
+    ingredient = Ingredient.query.get_or_404(id)
+    ingredient.name = request.json.get('name', ingredient.name)
+    db.session.commit()
+
+    return jsonify(ingredient = ingredient.serialize_ingredient())
+
 
 # 4 create page to add/edit ingredients
-    # route
-    # form model
-    # html page
-    # api function to add ingredients
-    # axios function to add ingredients
-    # api function to update ingredients
     # axios function to update ingredients
 # 3 allow adding ingredients to each cupcake when adding cupcakes
 # 2 add functionality on front end to update a cupcake
-    # update form page
-    # route for update form page
-    # update axios function
-    # fix delete behavior
+    # update form fill
+    # api update function (to include ingredients)
+    # axios update function
 # 1 add testing (flask & javascript)
+    # run testing
 # 0 remove logging logic

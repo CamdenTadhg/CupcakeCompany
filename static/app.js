@@ -6,8 +6,14 @@ const $cupcakeSizeInput = $('.cupcake-size');
 const $cupcakeRatingInput = $('.cupcake-rating');
 const $cupcakeImageInput = $('.cupcake-image');
 const $searchCupcakeForm = $('#search-cupcake-form');
+const $ingredientForm = $('#ingredient-form');
+const $ingredientList = $('.ingredient-list');
+const $ingredientNameInput = $('.ingredient-name');
 
-$(document).ready(cupcakesOnStart);
+$(document).ready(function(){
+    cupcakesOnStart();
+    ingredientsOnStart();
+})
 
 //cupcake searching event listener for submit
 $searchCupcakeForm.submit(function(event){
@@ -36,18 +42,24 @@ $cupcakeForm.submit(function(event){
 });
 
 //event listener for delete buttons on cupcake list
-$cupcakeList.on('click', '.delete-button', function(event){
-    Cupcake.deleteCupcake($(event.target).parent().attr('id'));
-    console.log($(event.target).parent().attr('id'));
-    $(this).closest('li').remove();
-})
+$cupcakeList.on('click', '.delete-button', async function(event){
+    try {
+        console.log('starting event listener');
+        const cupcakeId = $(event.currentTarget).closest('li').attr('id');
+        console.log(cupcakeId)
+        await Cupcake.deleteCupcake(cupcakeId);
+        $(this).closest('li').remove();
+    } catch (error) {
+        alert("Delete cupcake event listener failed. Please try again.")
+    }
+});
 
-//event listener for update buttons on cupcake list
-$cupcakeList.on('click', '.update-button', function(event){
-})
-
-//event listener for submit update buttons on cupcake list
-$cupcakeList.on('click', '.update-submit', function(event){
+//ingredient adding event listener
+$ingredientForm.submit(async function(event){
+    event.preventDefault();
+    console.log('ingredient form submitted');
+    newIngredient = gatherIngredientData();
+    newIngredient.addIngredient();
 })
 
 //initial function to show cupcakes on site load
@@ -63,7 +75,7 @@ function displayCupcakes(array){
     $cupcakeList.empty()
     for (let cupcake of array.cupcakes){
         console.log('starting for statement');
-        const $cupcakeLi = $(`<li id=${cupcake.id}><a href="/cupcakes/${cupcake.id}"><img src=${cupcake.image} class="img-thumbnail border-0" style="max-width:125px"></a> <b>${cupcake.flavor}</b> <span class="cupcake-details">(${cupcake.size}, ${cupcake.rating} stars)</span> <button class="btn btn-primary btn-small update-button" data-bs-toggle="modal" data-bs-target="update-modal"><i class="fas fa-pencil"></i></button><button class="btn btn-danger btn-small delete-button"><b>X</b></button></li>`);
+        const $cupcakeLi = $(`<li id=${cupcake.id}><img src=${cupcake.image} class="img-thumbnail border-0" style="max-width:125px"> <b>${cupcake.flavor}</b> <span class="cupcake-details">(${cupcake.size}, ${cupcake.rating} stars)</span><button class="btn btn-primary btn-small update-button" data-bs-toggle="modal" data-bs-target="update-modal"><i class="fas fa-pencil"></i></button><button class="btn btn-danger btn-small delete-button"><b>X</b></button></li>`);
         $cupcakeLi.addClass('fs-3');
         $cupcakeList.append($cupcakeLi);
 }}
@@ -81,3 +93,29 @@ function gatherCupcakeData() {
     return newCupcake;
 }
 
+//initial function to show ingredients on site load
+async function ingredientsOnStart() {
+    ingredientList = await IngredientList.getIngredients();
+    displayIngredients(ingredientList)
+}
+
+//display an instance of IngredientList on the page
+function displayIngredients(array){
+    console.log('entering display ingredients')
+    console.log(array);
+    $ingredientList.empty()
+    for (let ingredient of array.ingredients){
+        console.log('starting for statement');
+        const $ingredientDiv = $(`<div class="col" id=${ingredient.id}>${ingredient.name}</div>`);
+        $ingredientDiv.addClass('fs-3');
+        $ingredientList.append($ingredientDiv);
+}}
+
+function gatherIngredientData() {
+    console.log('starting gatherIngredientData');
+    const name = $ingredientNameInput.val();
+    ingredientData = {name: name};
+    const newIngredient = new Ingredient(ingredientData);
+    console.log(newIngredient);
+    return newIngredient;
+}

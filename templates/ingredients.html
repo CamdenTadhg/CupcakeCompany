@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Ingredients{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h3>Ingredient Form</h3>
+    <form id="ingredient-form">
+        {{form.hidden_tag()}}
+        <div>
+            {{form.name.label(class_="form-label")}}
+            {{form.name(class_="form-control ingredient-name")}}
+            <span class="text-danger">
+                {% for error in form.name.errors %}
+                    {{error}}
+                {% endfor %}
+            </span>
+        </div>
+        <button class="col btn btn-primary ingredient-button">Submit</button>
+    </form>
+</div>
+
+<div class="container text-center">
+    <div class="row row-cols-2 ingredient-list">
+
+    </div>
+</div>
+
+{% endblock %}
