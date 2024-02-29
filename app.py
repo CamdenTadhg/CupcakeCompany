@@ -98,8 +98,6 @@ def update_ingredient(id):
     return jsonify(ingredient = ingredient.serialize_ingredient())
 
 
-# 4 create page to add/edit ingredients
-    # axios function to update ingredients
 # 3 allow adding ingredients to each cupcake when adding cupcakes
 # 2 add functionality on front end to update a cupcake
     # update form fill

@@ -9,6 +9,7 @@ const $searchCupcakeForm = $('#search-cupcake-form');
 const $ingredientForm = $('#ingredient-form');
 const $ingredientList = $('.ingredient-list');
 const $ingredientNameInput = $('.ingredient-name');
+const $ingredientIdInput = $('.ingredient-id');
 
 $(document).ready(function(){
     cupcakesOnStart();
@@ -58,8 +59,26 @@ $cupcakeList.on('click', '.delete-button', async function(event){
 $ingredientForm.submit(async function(event){
     event.preventDefault();
     console.log('ingredient form submitted');
-    newIngredient = gatherIngredientData();
-    newIngredient.addIngredient();
+    if ($ingredientIdInput.val() === undefined){
+        newIngredient = gatherIngredientData();
+        await newIngredient.addIngredient();
+    } else {
+        ingredientId = $ingredientIdInput.val();
+        ingredientName = $ingredientNameInput.val();
+        ingredientData = {name: ingredientName}
+        await Ingredient.updateIngredient(ingredientId, ingredientData);
+    }
+
+})
+
+//ingredient click event listener
+$ingredientList.click(function(event){
+    let ingredientId = $(event.target).closest('div').attr('id');
+    console.log('ingredientId = ', ingredientId);
+    let ingredientName = $(event.target).closest('div').text();
+    console.log('ingredientName = ', ingredientName);
+    $ingredientIdInput.val(ingredientId);
+    $ingredientNameInput.val(ingredientName);
 })
 
 //initial function to show cupcakes on site load
@@ -106,7 +125,7 @@ function displayIngredients(array){
     $ingredientList.empty()
     for (let ingredient of array.ingredients){
         console.log('starting for statement');
-        const $ingredientDiv = $(`<div class="col" id=${ingredient.id}>${ingredient.name}</div>`);
+        const $ingredientDiv = $(`<div class="col" style="cursor:pointer" id=${ingredient.id}>${ingredient.name}</div>`);
         $ingredientDiv.addClass('fs-3');
         $ingredientList.append($ingredientDiv);
 }}

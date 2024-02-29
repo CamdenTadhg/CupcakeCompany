@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField
-from wtforms.validators import InputRequired, URL, NumberRange, AnyOf
+from wtforms.validators import InputRequired, URL, NumberRange, AnyOf, Optional
 
 class AddCupcakeForm(FlaskForm):
     """form for adding a cupcake to the database"""
@@ -19,4 +19,5 @@ class UpdateCupcakeForm(FlaskForm):
 class IngredientForm(FlaskForm):
     """form for adding and updating ingredients in the database"""
 
+    id = IntegerField("Id", validators=[Optional()])
     name = StringField("Ingredient Name", validators=[InputRequired(message="Please enter an ingredient")])

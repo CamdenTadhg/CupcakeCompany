@@ -117,7 +117,23 @@ class Ingredient {
             displayIngredients(mainIngredientList);
             $ingredientNameInput.val("");
         } catch(error) {
-            alert("Form submission failed. Please try again")
+            alert("Add ingredient form submission failed. Please try again");
+        }
+    }
+
+    static async updateIngredient(ingredientId, ingredientData) {
+        try {
+            console.log('starting update ingredient');
+            const response = await axios.patch(`/api/ingredients/${ingredientId}`, ingredientData);
+            console.log(response);
+            $ingredientList.empty();
+            let mainIngredientList = await IngredientList.getIngredients();
+            console.log('mainIngredientList = ', mainIngredientList);
+            displayIngredients(mainIngredientList);
+            $ingredientIdInput.val(undefined);
+            $ingredientNameInput.val("");
+        } catch(error) {
+            alert('Update ingredient form submission failed. Please try again');
         }
     }
 }
